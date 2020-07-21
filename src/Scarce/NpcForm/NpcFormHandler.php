@@ -3,7 +3,7 @@
 
 namespace Scarce\NpcForm;
 
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 use pocketmine\plugin\Plugin;
 
 class NpcFormHandler{
