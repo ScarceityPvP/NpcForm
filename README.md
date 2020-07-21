@@ -9,8 +9,9 @@ use scarce\NpcForm\NpcForm;
 ```
 **NOTE:** \
 -For the player to be able to see the form, they have to right-click on the NPC Entity. \
--NPC Entities despawn on server restart since their form data isn't saved after server restart
-### Creating a NpcForm Instance
+-NPC Entities despawn on server restart since their form data isn't saved after server restart\
+
+**Creating a NpcForm Instance**\
 Creating a NpcForm Instance is relatively simple and is similar to creating a FormAPI form.
 You first have to instantiate an NpcForm`$form = new NpcForm()`The NpcForm takes two required parameteres and one non required parameter `$form = new NpcForm(Callable $callable, Position $position, $yaw = 90)`
 The callable paramter takes a player object and an integer paramenter which will be null if no response is given
