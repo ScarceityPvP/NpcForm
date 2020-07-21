@@ -16,13 +16,13 @@ class NpcForm{
 
     private $entity;
 
-    public function __construct(?callable $callable, Position $position, int $yaw = 90)
+    public function __construct(?callable $callable, Position $position, int $yaw = 90, int $pitch =  0)
     {
         $this->setCallable($callable);
         $this->data["title"] = "";
         $this->data["content"] = "";
         $this->data["buttons"] = [];
-        $this->entity = Npc::create($position, $yaw);
+        $this->entity = Npc::create($position, $yaw, $pitch);
     }
 
     //Sets The title of the form and the NameTag of the entity

@@ -56,8 +56,8 @@ class Npc extends Entity{
         return "NPC";
     }
 
-    public static function create(Position $position, $yaw = 90):Npc{
-        $nbt = self::createBaseNBT($position, null, $yaw, 0);
+    public static function create(Position $position, int $yaw, int $pitch):Npc{
+        $nbt = self::createBaseNBT($position, null, $yaw, $pitch);
         $entity = new static($position->getLevel(), $nbt);
         return $entity;
     }

@@ -14,10 +14,12 @@ use Scarce\NpcForm\NpcFormHandler;
 <?php
 use Scarce\NpcForm\NpcFormHandler;
 /** @var Plugin $plugin */
-NpcFormHandler::register($plugin);
+if (!NpcFormHandler::isRegistered()){
+    NpcFormHandler::register($plugin);
+}
 ```
 -For the player to be able to see the form, they have to right-click on the NPC Entity. \
--NPC Entities despawn on server restart since their form data isn't saved after server restart\
+-NPC Entities despawn on server restart since their form data isn't saved after server restart[you can make them save by setting the form entity to save with chunk by doing `$form->getEntity()->setCanSaveWithChunk(true)`
 
 **Creating a NpcForm Instance**\
 Creating a NpcForm Instance is relatively simple and is similar to creating a FormAPI form.
