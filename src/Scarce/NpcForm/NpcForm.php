@@ -99,7 +99,9 @@ class NpcForm{
 
     //Handles the response received from the form
     public function handleResponse(Player $player, ?int $data): void {
+        var_dump("7");
         if ($this->callable !== null){
+            var_dump("8");
             ($this->callable)($player, $data);
         }
     }
