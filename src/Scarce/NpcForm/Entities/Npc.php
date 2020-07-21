@@ -63,11 +63,8 @@ class Npc extends Entity{
     }
 
     public function handleResponse(Player $player, ?int $data):void {
-        var_dump("4");
         if ($this->form !== null){
-            var_dump("5");
             if ($this->form instanceof NpcForm){
-                var_dump("6");
                 $this->form->handleResponse($player, $data);
             }
         }

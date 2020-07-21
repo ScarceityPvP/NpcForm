@@ -12,7 +12,6 @@ class NpcFormEventHandler implements Listener{
 
     public function __construct()
     {
-        var_dump("OK");
     }
 
     private $npc;
@@ -31,10 +30,8 @@ class NpcFormEventHandler implements Listener{
             switch ($pk->requestType){
                 case NpcRequestPacket::REQUEST_EXECUTE_ACTION:
                     $this->npc[$player->getName()] = $pk->actionType;
-                    var_dump(3);
                     break;
                 case NpcRequestPacket::REQUEST_EXECUTE_CLOSING_COMMANDS:
-                    var_dump("9");
                     if (isset($this->npc[$player->getName()])){
                         $response = $this->npc[$player->getName()];
                         unset($this->npc[$player->getName()]);
