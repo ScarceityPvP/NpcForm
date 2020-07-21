@@ -8,7 +8,7 @@ use pocketmine\network\mcpe\protocol\NpcRequestPacket;
 use pocketmine\Server;
 use Scarce\NpcForm\Entities\Npc;
 
-class EventListener implements Listener{
+class NpcFormEventHandler implements Listener{
 
     private $npc;
 
