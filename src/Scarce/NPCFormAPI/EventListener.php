@@ -1,0 +1,41 @@
+<?php
+
+namespace Scarce\NPCFormAPI;
+
+use pocketmine\event\Listener;
+use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\network\mcpe\protocol\NpcRequestPacket;
+use pocketmine\Server;
+use Scarce\NPCFormAPI\Entities\Npc;
+
+class EventListener implements Listener{
+
+    private $npc;
+
+    public function DataPacketReceive(DataPacketReceiveEvent $event){
+        $pk = $event->getPacket();
+        $player = $event->getPlayer();
+
+        if ($pk instanceof NpcRequestPacket){
+            if (($entity = Server::getInstance()->findEntity($pk->entityRuntimeId)) === null){
+                return;
+            }
+            if (!$entity instanceof Npc){
+                return;
+            }
+            switch ($pk->requestType){
+                case NpcRequestPacket::REQUEST_EXECUTE_ACTION:
+                    $this->npc[$player->getName()] = $pk->actionType;
+                    break;
+                case NpcRequestPacket::REQUEST_EXECUTE_CLOSING_COMMANDS:
+                    if (isset($this->npc[$player->getName()])){
+                        $response = $this->npc[$player->getName()];
+                        unset($this->npc[$player->getName()]);
+                        $entity->handleResponse($player, $response);
+                        break;
+                    }
+            }
+        }
+
+    }
+}

@@ -1,11 +1,11 @@
-# NpcForm
-**NpcForm is a PocketMine-MP birion that allows plugins to create and managing NpcForms!**
+# NPCFormAPI
+**NPCFormAPI is a PocketMine-MP plugin that allows plugins to create and managing NpcForms!**
 
 ### Usage
-You'll first need to import the `scarce\NpcForm\NpcForm` class. This is should be the only class required to create and manage NpcForms.
+You'll first need to import the `scarce\NPCFormAPI\NpcForm.php` class. This is should be the only class required to create and manage NpcForms.
 ```php
 <?php
-use scarce\NpcForm\NpcForm;
+use scarce\NPCFormAPI\NpcForm;
 ```
 **NOTE:** For the player to be able to see the form, they have to right-click on the NPC Entity
 ### Creating a NpcForm Instance
@@ -51,7 +51,7 @@ $form->spawnToAll();
 This will show an example of how to use the callable in the NpcForm class
 ```php
 <?php
-use scarce\NpcForm\NpcForm;
+use scarce\NPCFormAPI\NpcForm;
 
 public function sendNpcForm(Player $player){
         $form = new NpcForm(function(Player $player, ?int $data){
@@ -76,4 +76,7 @@ public function sendNpcForm(Player $player){
 ```     
 ###To Do
 -Save Npc Data on Server Reset and add Method for it[]
+
+
+
 
