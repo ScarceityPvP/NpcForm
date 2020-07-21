@@ -6,11 +6,11 @@ namespace Scarce\NpcForm;
 use InvalidArgumentException;
 use pocketmine\plugin\Plugin;
 
-class NpcFormHandler{
+final class NpcFormHandler{
 
     public static $registered = false;
 
-    public function isRegistered(){
+    public static function isRegistered(){
         if (self::$registered){
             return true;
         }else{
@@ -21,10 +21,10 @@ class NpcFormHandler{
     public static function register(Plugin $plugin){
         if (self::$registered){
             throw new InvalidArgumentException($plugin->getName() . " tried to register " . self::class . " twice!");
-        }else{
-            self::$registered = true;
-            $plugin->getServer()->getPluginManager()->registerEvents(new NpcFormEventHandler(), $plugin);
         }
+        self::$registered = true;
+        $plugin->getServer()->getPluginManager()->registerEvents(new NpcFormEventHandler(), $plugin);
+
     }
 
 }

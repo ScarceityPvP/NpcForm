@@ -10,6 +10,11 @@ use Scarce\NpcForm\Entities\Npc;
 
 class NpcFormEventHandler implements Listener{
 
+    public function __construct()
+    {
+        var_dump("OK");
+    }
+
     private $npc;
 
     public function DataPacketReceive(DataPacketReceiveEvent $event){

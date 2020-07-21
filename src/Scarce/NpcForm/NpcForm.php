@@ -18,7 +18,7 @@ class NpcForm{
 
     public function __construct(?callable $callable, Position $position, int $yaw = 90)
     {
-        $this->callable = $callable;
+        $this->setCallable($callable);
         $this->data["title"] = "";
         $this->data["content"] = "";
         $this->data["buttons"] = [];
@@ -65,7 +65,7 @@ class NpcForm{
     }
 
     //Sets the callable of the form
-    public function setCallable(callable $callable):void{
+    public function setCallable(?callable $callable):void{
         $this->callable = $callable;
     }
 
