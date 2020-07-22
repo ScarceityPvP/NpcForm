@@ -4,7 +4,9 @@
 namespace Scarce\NpcForm;
 
 use InvalidArgumentException;
+use pocketmine\entity\Entity;
 use pocketmine\plugin\Plugin;
+use Scarce\NpcForm\Entities\Npc;
 
 final class NpcFormHandler{
 
@@ -19,6 +21,7 @@ final class NpcFormHandler{
     }
 
     public static function register(Plugin $plugin){
+        Entity::registerEntity(Npc::class, true);
         if (self::$registered){
             throw new InvalidArgumentException($plugin->getName() . " tried to register " . self::class . " twice!");
         }
