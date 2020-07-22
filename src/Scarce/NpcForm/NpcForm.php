@@ -23,7 +23,7 @@ class NpcForm{
         $this->data["title"] = "";
         $this->data["content"] = "";
         $this->data["buttons"] = [];
-        Npc::create($position, $yaw, $pitch);
+        $this->entity = Npc::create($position, $yaw, $pitch);
     }
 
     //Sets The title of the form and the NameTag of the entity

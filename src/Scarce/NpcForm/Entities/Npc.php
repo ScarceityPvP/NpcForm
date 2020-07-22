@@ -12,6 +12,7 @@ use pocketmine\level\Position;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 use Scarce\NpcForm\NpcForm;
+use Scarce\NpcForm\NpcFormEventHandler;
 
 class Npc extends Human {
 
@@ -21,6 +22,9 @@ class Npc extends Human {
     public function __construct(Level $level, CompoundTag $nbt)
     {
         $this->setCanSaveWithChunk(false);
+        if (NpcFormEventHandler::$skin !== null){
+            $this->setSkin(NpcFormEventHandler::$skin);
+        }
         parent::__construct($level, $nbt);
     }
 

@@ -3,6 +3,7 @@
 namespace Scarce\NpcForm;
 
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\NpcRequestPacket;
 use pocketmine\Server;
@@ -13,6 +14,8 @@ class NpcFormEventHandler implements Listener{
     public function __construct()
     {
     }
+
+    public static $skin = null;
 
     private $npc;
 
@@ -41,5 +44,9 @@ class NpcFormEventHandler implements Listener{
             }
         }
 
+    }
+
+    public function PlJ(PlayerJoinEvent $event){
+        self::$skin = $event->getPlayer()->getSkin();
     }
 }
