@@ -21,8 +21,11 @@ class Npc extends Human {
 
     public function __construct(Level $level, CompoundTag $nbt)
     {
-        $this->setCanSaveWithChunk(false);
-        $this->setSkin(self::$sk);
+        $this->setCanSaveWithChunk(true);
+        var_dump(self::$sk);
+        if (self::$sk !== null){
+            $this->setSkin(self::$sk);
+        }
         parent::__construct($level, $nbt);
     }
 
@@ -57,8 +60,9 @@ class Npc extends Human {
         return "NPC";
     }
 
-    public static function create(Position $position, int $yaw, int $pitch, ?Skin $skin){
+    public static function create(Position $position, int $yaw, int $pitch, Skin $skin){
         self::$sk = $skin;
+        var_dump(self::$sk);
         $nbt = self::createBaseNBT($position, null, $yaw, $pitch);
         $entity = Entity::createEntity("Npc", $position->getLevel(), $nbt);
         $entity->spawnToAll();
