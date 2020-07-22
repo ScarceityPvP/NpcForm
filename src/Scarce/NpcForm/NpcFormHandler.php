@@ -12,7 +12,6 @@ use Scarce\NpcForm\Entities\Npc;
 final class NpcFormHandler{
 
     public static $registered = false;
-    public static $skin = null;
 
     public static function isRegistered(){
         if (self::$registered){
@@ -32,9 +31,6 @@ final class NpcFormHandler{
 
     }
 
-    public function join(PlayerJoinEvent $event){
-        self::$skin = $event->getPlayer()->getSkin();
-    }
 
 
 
