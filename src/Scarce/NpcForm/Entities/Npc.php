@@ -19,9 +19,9 @@ class Npc extends Human {
 
     public function __construct(Level $level, CompoundTag $nbt, ?Skin $skin)
     {
-        parent::__construct($level, $nbt);
         $this->setCanSaveWithChunk(false);
         $this->setSkin($skin);
+        parent::__construct($level, $nbt);
     }
 
     public function initEntity(): void
