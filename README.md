@@ -60,7 +60,7 @@ You can also spawn the entity to all players by using
 ```php
 $form->spawnToAll();
 ```
-###Handiling NpcForm Callable
+Handiling NpcForm Callables
 This will show an example of how to use the callable in the NpcForm class
 ```php
 <?php
@@ -73,7 +73,7 @@ public function sendNpcForm(Player $player){
                 return;
             }
             $player->sendMessage("$data");
-        }, $player->asPosition(), $player->yaw);
+        }, $player->asPosition(), $player->yaw, $player->pitch);
         
         $form->setTitle("Number Selector");
         $form->setContent( "Chose a Button!");
@@ -87,7 +87,7 @@ public function sendNpcForm(Player $player){
         $form->spawnTo($player);
     }
 ```     
-###To Do
+To Do
 Help with any of the todo list objectives is accepted
 
 -Save Npc Data on Server Reset[]\
