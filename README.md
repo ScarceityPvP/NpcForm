@@ -2,7 +2,7 @@
 **NpcForm is a PocketMine-MP plugin that allows plugins to create and managing NpcForms!**
 
 ### Usage
-You'll first need to import the `scarce\NpcForm\NpcForm` and `scarce\NpcForm\NpcFormHandler` class. This and NpcFormHandler should be the only classes required to create and manage NpcForms.
+You'll first need to import the `Scarce\NpcForm\NpcForm` and `Scarce\NpcForm\NpcFormHandler` class. This and NpcFormHandler should be the only classes required to create and manage NpcForms.
 ```php
 <?php
 use Scarce\NpcForm\NpcForm;
