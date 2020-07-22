@@ -16,6 +16,7 @@ use Scarce\NpcForm\NpcFormEventHandler;
 class Npc extends Human {
 
     public $eyeHeight = 1.6;
+    public $form = null;
 
 
     public function __construct(Level $level, CompoundTag $nbt)
