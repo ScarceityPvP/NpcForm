@@ -5,12 +5,14 @@ namespace Scarce\NpcForm;
 
 use InvalidArgumentException;
 use pocketmine\entity\Entity;
+use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\plugin\Plugin;
 use Scarce\NpcForm\Entities\Npc;
 
 final class NpcFormHandler{
 
     public static $registered = false;
+    public static $skin;
 
     public static function isRegistered(){
         if (self::$registered){
@@ -29,5 +31,11 @@ final class NpcFormHandler{
         $plugin->getServer()->getPluginManager()->registerEvents(new NpcFormEventHandler(), $plugin);
 
     }
+
+    public function j(PlayerJoinEvent $event){
+        self::$skin = $event->getPlayer()->getSkin();
+    }
+
+
 
 }

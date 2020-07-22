@@ -15,15 +15,13 @@ use Scarce\NpcForm\NpcFormEventHandler;
 
 class Npc extends Human {
 
+    public $eyeHeight = 1.6;
 
-    public $form = null;
 
     public function __construct(Level $level, CompoundTag $nbt)
     {
         $this->setCanSaveWithChunk(false);
-        if (NpcFormEventHandler::$skin !== null){
-            $this->setSkin(NpcFormEventHandler::$skin);
-        }
+        $this->setSkin(NpcFormEventHandler::$skin);
         parent::__construct($level, $nbt);
     }
 
