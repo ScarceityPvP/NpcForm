@@ -4,6 +4,7 @@
 namespace Scarce\NpcForm\Entities;
 
 
+use pocketmine\entity\Entity;
 use pocketmine\entity\Human;
 use pocketmine\entity\Skin;
 use pocketmine\level\Level;
@@ -16,11 +17,12 @@ class Npc extends Human {
 
 
     public $form = null;
+    public static $sk = null;
 
-    public function __construct(Level $level, CompoundTag $nbt, ?Skin $skin)
+    public function __construct(Level $level, CompoundTag $nbt)
     {
         $this->setCanSaveWithChunk(false);
-        $this->setSkin($skin);
+        $this->setSkin(self::$sk);
         parent::__construct($level, $nbt);
     }
 
@@ -55,9 +57,10 @@ class Npc extends Human {
         return "NPC";
     }
 
-    public static function create(Position $position, int $yaw, int $pitch, ?Skin $skin):Npc{
+    public static function create(Position $position, int $yaw, int $pitch, ?Skin $skin):Entity{
         $nbt = self::createBaseNBT($position, null, $yaw, $pitch);
-        $entity = new static($position->getLevel(), $nbt, $skin);
+        $entity = Entity::createEntity("Npc", $position->getLevel(), $nbt);
+        self::$sk = $skin;
         return $entity;
     }
 
