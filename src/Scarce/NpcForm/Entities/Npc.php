@@ -20,6 +20,7 @@ class Npc extends Human {
     {
         parent::__construct($level, $nbt);
         $this->setCanSaveWithChunk(false);
+        $this->setSkin(NpcForm::$skin);
     }
 
     public function initEntity(): void

@@ -3,6 +3,7 @@
 
 namespace Scarce\NpcForm;
 
+use pocketmine\entity\Skin;
 use pocketmine\level\Position;
 use pocketmine\Player;
 use Scarce\NpcForm\Entities\Npc;
@@ -15,9 +16,11 @@ class NpcForm{
     public $callable = null;
 
     private $entity;
+    public static $skin;
 
-    public function __construct(?callable $callable, Position $position, int $yaw = 90, int $pitch =  0)
+    public function __construct(?callable $callable, Position $position, int $yaw = 90, int $pitch =  0, Skin $skin)
     {
+        self::$skin = $skin;
         $this->setCallable($callable);
         $this->data["title"] = "";
         $this->data["content"] = "";
