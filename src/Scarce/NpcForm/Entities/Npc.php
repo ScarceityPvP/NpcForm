@@ -6,7 +6,6 @@ namespace Scarce\NpcForm\Entities;
 
 use pocketmine\entity\Entity;
 use pocketmine\entity\Human;
-use pocketmine\entity\Skin;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
 use pocketmine\nbt\tag\CompoundTag;
@@ -30,6 +29,7 @@ class Npc extends Human {
 
     public function initEntity(): void
     {
+        parent::initEntity();
         $this->propertyManager->setByte(self::DATA_HAS_NPC_COMPONENT, true);
     }
 
@@ -59,9 +59,9 @@ class Npc extends Human {
         return "NPC";
     }
 
-    public static function create(Position $position, int $yaw, int $pitch):Npc{
+    public static function create(Position $position, int $yaw, int $pitch):Entity{
         $nbt = self::createBaseNBT($position, null, $yaw, $pitch);
-        $entity = new static($position->getLevel(), $nbt);
+        $entity = Entity::createEntity("Npc", $position->getLevel(), $nbt);
         return $entity;
     }
 
