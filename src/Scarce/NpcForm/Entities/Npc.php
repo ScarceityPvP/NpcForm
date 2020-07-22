@@ -4,19 +4,16 @@
 namespace Scarce\NpcForm\Entities;
 
 use pocketmine\entity\Entity;
+use pocketmine\entity\Human;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 use Scarce\NpcForm\NpcForm;
 
-class Npc extends Entity{
+class Npc extends Human {
 
-    public const NETWORK_ID = self::NPC;
 
-    public $width = 0.6;
-    public $height = 1.8;
-    public $eyeHeight = 1.6;
     public $form = null;
 
     public function __construct(Level $level, CompoundTag $nbt)
