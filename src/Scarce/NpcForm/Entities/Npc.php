@@ -21,7 +21,9 @@ class Npc extends Human {
     public function __construct(Level $level, CompoundTag $nbt)
     {
         $this->setCanSaveWithChunk(false);
-        $this->setSkin(NpcFormEventHandler::$skin);
+        if (NpcFormEventHandler::$skin !== null){
+            $this->setSkin(NpcFormEventHandler::$skin);
+        }
         parent::__construct($level, $nbt);
     }
 
