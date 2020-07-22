@@ -21,7 +21,6 @@ final class NpcFormHandler{
     }
 
     public static function register(Plugin $plugin){
-        Entity::registerEntity(Npc::class, true);
         if (self::$registered){
             throw new InvalidArgumentException($plugin->getName() . " tried to register " . self::class . " twice!");
         }
