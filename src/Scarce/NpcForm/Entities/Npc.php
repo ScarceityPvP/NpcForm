@@ -57,11 +57,11 @@ class Npc extends Human {
         return "NPC";
     }
 
-    public static function create(Position $position, int $yaw, int $pitch, ?Skin $skin):Entity{
+    public static function create(Position $position, int $yaw, int $pitch, ?Skin $skin){
         $nbt = self::createBaseNBT($position, null, $yaw, $pitch);
         $entity = Entity::createEntity("Npc", $position->getLevel(), $nbt);
+        $entity->spawnToAll();
         self::$sk = $skin;
-        return $entity;
     }
 
     public function handleResponse(Player $player, ?int $data):void {
