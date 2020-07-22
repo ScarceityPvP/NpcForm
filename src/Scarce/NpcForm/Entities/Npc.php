@@ -13,8 +13,12 @@ use pocketmine\Player;
 use Scarce\NpcForm\NpcForm;
 use Scarce\NpcForm\NpcFormEventHandler;
 
-class Npc extends Human {
+class Npc extends Entity {
 
+    public const NETWORK_ID = self::ZOMBIE_PIGMAN;
+
+    public $height = 1.95;
+    public $width = .6;
     public $eyeHeight = 1.6;
     public $form = null;
 
@@ -22,9 +26,6 @@ class Npc extends Human {
     public function __construct(Level $level, CompoundTag $nbt)
     {
         $this->setCanSaveWithChunk(false);
-        if (NpcFormEventHandler::$skin !== null){
-            $this->setSkin(NpcFormEventHandler::$skin);
-        }
         parent::__construct($level, $nbt);
     }
 

@@ -45,7 +45,4 @@ class NpcFormEventHandler implements Listener{
         }
 
     }
-    public function join(PlayerJoinEvent $event){
-        self::$skin = $event->getPlayer()->getSkin();
-    }
 }
