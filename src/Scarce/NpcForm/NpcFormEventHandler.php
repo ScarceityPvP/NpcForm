@@ -2,12 +2,13 @@
 
 namespace Scarce\NpcForm;
 
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\network\mcpe\protocol\InteractPacket;
 use pocketmine\network\mcpe\protocol\NpcRequestPacket;
 use pocketmine\Server;
-use Scarce\NpcForm\Entities\Npc;
+use Scarce\NpcForm\Entity\BaseEntity;
 
 class NpcFormEventHandler implements Listener{
 
@@ -27,7 +28,7 @@ class NpcFormEventHandler implements Listener{
             if (($entity = Server::getInstance()->findEntity($pk->entityRuntimeId)) === null){
                 return;
             }
-            if (!$entity instanceof Npc){
+            if (!$entity instanceof BaseEntity){
                 return;
             }
             switch ($pk->requestType){
@@ -35,6 +36,7 @@ class NpcFormEventHandler implements Listener{
                     $this->npc[$player->getName()] = $pk->actionType;
                     break;
                 case NpcRequestPacket::REQUEST_EXECUTE_CLOSING_COMMANDS:
+                    $entity->onClose($player);
                     if (isset($this->npc[$player->getName()])){
                         $response = $this->npc[$player->getName()];
                         unset($this->npc[$player->getName()]);
@@ -44,5 +46,22 @@ class NpcFormEventHandler implements Listener{
             }
         }
 
+    }
+
+    public function InteractRecieve(DataPacketReceiveEvent $event){
+        $pk = $event->getPacket();
+        if ($pk instanceof InteractPacket){
+            if ($pk->action === InteractPacket::ACTION_OPEN_NPC){
+                var_dump("1");
+            }
+        }
+    }
+
+
+    public function onDamage(EntityDamageEvent $event){
+        $entity = $event->getEntity();
+        if ($entity instanceof BaseEntity && !$entity->canTakeDamage()){
+            $event->setCancelled(true);
+        }
     }
 }
