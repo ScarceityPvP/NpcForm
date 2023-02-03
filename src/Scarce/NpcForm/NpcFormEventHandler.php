@@ -3,7 +3,6 @@
 namespace Scarce\NpcForm;
 
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\NpcRequestPacket;
 use pocketmine\Server;
@@ -15,16 +14,24 @@ class NpcFormEventHandler implements Listener{
     {
     }
 
-    public static $skin = null;
+    /**
+     * Player name, {@link NpcRequestPacket->actionIndex}.
+     * @var array<string, int>
+     */
+    private array $npc;
 
-    private $npc;
-
-    public function DataPacketReceive(DataPacketReceiveEvent $event){
+    public function DataPacketReceive(DataPacketReceiveEvent $event) : void {
         $pk = $event->getPacket();
-        $player = $event->getPlayer();
+        $player = $event->getOrigin()->getPlayer();
+
 
         if ($pk instanceof NpcRequestPacket){
-            if (($entity = Server::getInstance()->findEntity($pk->entityRuntimeId)) === null){
+            if ($player === null) {
+                Server::getInstance()->getLogger()->warning("Connection {$event->getOrigin()->getDisplayName()} might be abusing NpcRequestPacket.");
+                return;
+            }
+
+            if (($entity = Server::getInstance()->getWorldManager()->findEntity($pk->actorRuntimeId)) === null){
                 return;
             }
             if (!$entity instanceof Npc){
@@ -32,15 +39,15 @@ class NpcFormEventHandler implements Listener{
             }
             switch ($pk->requestType){
                 case NpcRequestPacket::REQUEST_EXECUTE_ACTION:
-                    $this->npc[$player->getName()] = $pk->actionType;
-                    break;
+                $this->npc[$player->getName()] = $pk->actionIndex;
+                break;
                 case NpcRequestPacket::REQUEST_EXECUTE_CLOSING_COMMANDS:
-                    if (isset($this->npc[$player->getName()])){
-                        $response = $this->npc[$player->getName()];
-                        unset($this->npc[$player->getName()]);
-                        $entity->handleResponse($player, $response);
-                        break;
-                    }
+                if (isset($this->npc[$player->getName()])){
+                    $response = $this->npc[$player->getName()];
+                    unset($this->npc[$player->getName()]);
+                    $entity->handleResponse($player, $response);
+                    break;
+                }
             }
         }
 

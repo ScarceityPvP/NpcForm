@@ -4,56 +4,67 @@
 namespace Scarce\NpcForm\Entities;
 
 
-use pocketmine\entity\Entity;
-use pocketmine\entity\Human;
-use pocketmine\level\Level;
-use pocketmine\level\Position;
-use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\Player;
 use Scarce\NpcForm\NpcForm;
-use Scarce\NpcForm\NpcFormEventHandler;
+use pocketmine\entity\Entity;
+use pocketmine\entity\EntitySizeInfo;
+use pocketmine\entity\Location;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataProperties;
+use pocketmine\player\Player;
+use pocketmine\world\Position;
 
 class Npc extends Entity {
 
-    public const NETWORK_ID = self::ZOMBIE_PIGMAN;
-
-    public $height = 1.95;
-    public $width = .6;
-    public $eyeHeight = 1.6;
-    public $form = null;
-
-
-    public function __construct(Level $level, CompoundTag $nbt)
-    {
-        $this->setCanSaveWithChunk(false);
-        parent::__construct($level, $nbt);
+    protected function getInitialSizeInfo() : EntitySizeInfo {
+        return new EntitySizeInfo(1.95, .6, 1.6);
     }
 
-    public function initEntity(): void
-    {
-        parent::initEntity();
-        $this->propertyManager->setByte(self::DATA_HAS_NPC_COMPONENT, true);
+    public static function getNetworkTypeId() : string {
+        return EntityIds::ZOMBIE_PIGMAN;
     }
 
-    public function setTitle(string $title){
+    public ?NpcForm $form = null;
+
+
+    public function canSaveWithChunk() : bool{
+        return false;
+    }
+
+    public function initEntity(CompoundTag $tag): void
+    {
+        parent::initEntity($tag);
+        $this->getNetworkProperties()->setByte(EntityMetadataProperties::HAS_NPC_COMPONENT, (int)true);
+    }
+
+    public function setTitle(string $title) : void {
         $this->setNameTag($title);
     }
 
+    public function getTitle() : string {
+        return $this->getNameTag();
+    }
+
     public function setContent(string $text): void {
-        $this->propertyManager->setString(self::DATA_INTERACTIVE_TAG, $text);
+        $this->getNetworkProperties()->setString(EntityMetadataProperties::INTERACTIVE_TAG, $text);
     }
 
     //Current Action Of This Is Unknown
     public function setSkinIndex(string $index): void {
-        $this->propertyManager->setString(self::DATA_NPC_SKIN_INDEX, $index);
+        $this->getNetworkProperties()->setString(EntityMetadataProperties::NPC_SKIN_INDEX, $index);
     }
 
     public function setForm(NpcForm $form):void {
         $this->form = $form;
     }
 
+    /**
+     * @param ?(array{"button_name": string, "data": ?(mixed[]), "mode": int, "text": string, "type": int}[]) $data
+     * @see Npc::buttons
+     * @throws \JsonException
+     */
     public function setActions(?array $data): void {
-        $this->propertyManager->setString(self::DATA_NPC_ACTIONS, json_encode($data, JSON_UNESCAPED_UNICODE));
+        $this->getNetworkProperties()->setString(EntityMetadataProperties::NPC_ACTIONS, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR));
     }
 
 
@@ -61,9 +72,8 @@ class Npc extends Entity {
         return "NPC";
     }
 
-    public static function create(Position $position, int $yaw, int $pitch):Entity{
-        $nbt = self::createBaseNBT($position, null, $yaw, $pitch);
-        $entity = Entity::createEntity("Npc", $position->getLevel(), $nbt);
+    public static function create(Position $position, int $yaw, int $pitch):self{
+        $entity = new self(Location::fromObject($position, $position->getWorld(), $yaw, $pitch));
         return $entity;
     }
 

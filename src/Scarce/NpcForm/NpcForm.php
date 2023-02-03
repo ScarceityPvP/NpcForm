@@ -3,71 +3,73 @@
 
 namespace Scarce\NpcForm;
 
-use pocketmine\entity\Skin;
-use pocketmine\level\Position;
-use pocketmine\Player;
 use Scarce\NpcForm\Entities\Npc;
+use pocketmine\player\Player;
+use pocketmine\world\Position;
 
 class NpcForm{
 
+    public string $content = "";
+         
+    /**
+     * @var array{"button_name": string, "data": ?(mixed[]), "mode": int, "text": string, "type": int}[]
+     */
+    public array $buttons = [];
 
-    public $data;
+    public ?\Closure $callable = null;
 
-    public $callable = null;
-
-    private $entity;
+    private Npc $entity;
 
     public function __construct(?callable $callable, Position $position, int $yaw = 90, int $pitch =  0)
     {
         $this->setCallable($callable);
-        $this->data["title"] = "";
-        $this->data["content"] = "";
-        $this->data["buttons"] = [];
         $this->entity = Npc::create($position, $yaw, $pitch);
     }
 
     //Sets The title of the form and the NameTag of the entity
     public function setTitle(string $title): void{
-        $this->data["title"] = $title;
         $this->entity->setTitle($title);
     }
 
     //The action of this method is currently unknown
-    public function setSkinIndex(string $id){
+    public function setSkinIndex(string $id): void{
         $this->entity->setSkinIndex($id);
     }
 
     //Returns the title of the form
     public function getTitle():string {
-        return  $this->data["title"];
+        return $this->entity->getTitle();
     }
 
     //Sets the text of the form
     public function setContent(string $content): void {
-        $this->data["content"] = $content;
-        $this->entity->setContent($this->data["content"]);
+        $this->entity->setContent($this->content = $content);
     }
 
     //Returns the text of the form
     public function getContent(): string {
-        return $this->data["content"];
+        return $this->content;
     }
 
-    //Adds a button to the form[some ascpects are currently unknown]
+    /**
+     *  Adds a button to the form[some ascpects are currently unknown.
+     * @throws \JsonException
+     */
     public function addButton(string $name):void{
-        $this->data["buttons"][] = [
+        $this->buttons[] = [
             "button_name" => $name,
             "data" => null,
             "mode" => 0,
             "text" => "",
             "type" => 1,
         ];
-        $this->entity->setActions($this->data["buttons"]);
+        $this->entity->setActions($this->buttons);
     }
 
     //Sets the callable of the form
     public function setCallable(?callable $callable):void{
-        $this->callable = $callable;
+        if ($callable === null) $this->callable = null;
+        else $this->callable = $callable instanceof \Closure ? $callable : \Closure::fromCallable($callable);
     }
 
     //Returns the callable of the form
@@ -93,9 +95,17 @@ class NpcForm{
         $this->entity->spawnToAll();
     }
 
-    //creates a json storable version of the forum data
-    public function jsonSerialize(){
-        return $this->data;
+    /**
+     * Creates a json storable version of the forum data.
+     * @return array{"title": string, "content": string, "buttons": array{"button_name": string, "data": ?(mixed[]), "mode": int, "text": string, "type": int}[]}
+     * @see $this->buttons
+     */
+    public function jsonSerialize() : array {
+        return [
+            "title" => $this->getTitle(),
+            "content" => $this->getContent(),
+            "buttons" => $this->buttons
+        ];
     }
 
     //Handles the response received from the form

@@ -4,34 +4,37 @@
 namespace Scarce\NpcForm;
 
 use InvalidArgumentException;
-use pocketmine\entity\Entity;
-use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\plugin\Plugin;
 use Scarce\NpcForm\Entities\Npc;
+use pocketmine\Server;
+use pocketmine\entity\EntityDataHelper;
+use pocketmine\entity\EntityFactory;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\plugin\Plugin;
+use pocketmine\world\World;
 
-final class NpcFormHandler{
+final class NpcFormHandler
+{
 
-    public static $registered = false;
+    public static bool $registered = false;
 
-    public static function isRegistered(){
-        if (self::$registered){
-            return true;
-        }else{
-            return false;
-        }
+    public static function isRegistered() : bool
+    {
+        return self::$registered;
     }
 
-    public static function register(Plugin $plugin){
-        Entity::registerEntity(Npc::class, true);
-        if (self::$registered){
-            throw new InvalidArgumentException($plugin->getName() . " tried to register " . self::class . " twice!");
+    /**
+     * @throws \InvalidArgumentException
+     */
+    public static function register(Plugin $plugin) : void
+    {
+        EntityFactory::getInstance()->register(Npc::class, function (World $world, CompoundTag $nbt): Npc {
+            return new Npc(EntityDataHelper::parseLocation($nbt, $world), $nbt);
+        }, ['Npc', 'minecraft:npc'], null);
+
+        if (self::$registered) {
+            throw new \InvalidArgumentException($plugin->getName() . " tried to register " . self::class . " twice!");
         }
         self::$registered = true;
-        $plugin->getServer()->getPluginManager()->registerEvents(new NpcFormEventHandler(), $plugin);
-
+        Server::getInstance()->getPluginManager()->registerEvents(new NpcFormEventHandler(), $plugin);
     }
-
-
-
-
 }
