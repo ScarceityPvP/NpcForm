@@ -72,6 +72,11 @@ class Npc extends Entity {
         return "NPC";
     }
 
+    /**
+     * NOTICE: Does not spawn the entity.
+     * @see $this->spawnTo()
+     * @see $this->spawnToAll()
+     */
     public static function create(Position $position, int $yaw, int $pitch):self{
         $entity = new self(Location::fromObject($position, $position->getWorld(), $yaw, $pitch));
         return $entity;
