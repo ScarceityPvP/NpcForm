@@ -21,7 +21,7 @@ class Npc extends Entity {
     }
 
     public static function getNetworkTypeId() : string {
-        return EntityIds::ZOMBIE_PIGMAN;
+        return EntityIds::NPC;
     }
 
     public ?NpcForm $form = null;
